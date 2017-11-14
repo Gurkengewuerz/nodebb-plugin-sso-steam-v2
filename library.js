@@ -5,7 +5,7 @@
 		db = module.parent.require('../src/database.js'),
 		meta = module.parent.require('./meta'),
 		passport = module.parent.require('passport'),
-		passportSteam = require('passport-steam').Strategy,
+		passportSteam = require('passport-steam-thetown').Strategy,
 		utils = module.parent.require('../public/src/utils'),
 		authenticationController = module.parent.require('./controllers/authentication'),
 		winston = module.parent.require('winston'),
@@ -60,7 +60,7 @@
 							return done(null, req.user);
 						}
 
-						Steam.login(profile.id, profile.displayName, profile._json.avatarfull, function(err, user) {
+						Steam.login(profile.id, profile.possibleUsername, profile._json.avatarfull, function(err, user) {
 							if (err) {
 								return done(new Error(err));
 							}
@@ -125,7 +125,7 @@
 				});
 			} else {// New User
 				if (!utils.isUserNameValid(username)) {
-					return callback('Invalid username! Your username can only contain alphanumeric letters (a-z, numbers, spaces).');
+					return callback('Invalid username! Your username (' + username + ') can only contain alphanumeric letters (a-z, numbers, spaces). ');
 				}
 
 				user.create({username: username}, function(err, uid) {
